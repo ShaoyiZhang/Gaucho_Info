@@ -1,17 +1,12 @@
 import re
 
 def ValidLink(ifile):
-	with open(ifile,'rt') as in_file:
-		homePage = in_file.read()
-	getCOELink = re.compile(r'CollegesDepartments/coe/(.*?).aspx', re.MULTILINE | re.DOTALL)
-	getLASLink = re.compile(r'ls-intro/(.*?).aspx', re.MULTILINE | re.DOTALL)
-
-	COE = ''
+	# generate  
 	LAS = ''
 	COE = ' '.join(re.findall(getCOELink, homePage))
 	LAS = ' '.join(re.findall(getLASLink, homePage))
-	COE = ' '.join(unique_list(COE.split()))
-	LAS = ' '.join(unique_list(LAS.split()))
+	COE = ' '.join(UniqueList(COE.split()))
+	LAS = ' '.join(UniqueList(LAS.split()))
 	with open('COE.txt','w') as out_file:		
 		out_file.write(COE)
 	with open('LAS.txt','w') as out_file:
@@ -26,15 +21,15 @@ def ValidLink(ifile):
 		webList += (frontLAS+department+end+'\n')
 	with open('webList.txt','w') as out_file:
 		out_file.write(webList)
-	print webList.split()
 
+def CourseInfoByDepartment(ifile):
+	with open(ifile,'rt') as in_file:
+		htmlPage = in_file                   #title        unit                                   prerequisite   description                       title       units
+	getLower = re.compile(r'CourseDisplay.<b>"(.*?)"<b>.<b>(.*?)<b>.<i>.<br>.Prerequisite:</strong>"(.*?)"</i>."(.*?)"</div>'|r'CourseDisplay.<b>"(.*?)"<b>.<b>(.*?)<b>.<i>$".".2px;">$"(.*?)"')
+	jsonOneDepartment = htmlPage.findall(getLower)
+	print jsonOneDepartment 
 
-
-def unique_list(l):
+def UniqueList(l):
     ulist = []
     [ulist.append(x) for x in l if x not in ulist]
-    return ulist
-	#a='calvin klein design dress calvin klein'
-	#a=' '.join(unique_list(a.split()))
-
-ValidLink('UndergraduateEducation.html')
+    return ulist     

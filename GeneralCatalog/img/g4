@@ -1,0 +1,8 @@
+digraph {
+	CS8
+	CS16
+	CS24
+	CS32
+	CS40
+		CS16 -> CS24
+}
